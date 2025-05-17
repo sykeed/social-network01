@@ -1,4 +1,4 @@
-package models
+package auth
 
 type Logininfo struct {
 	Email    string `json:email`

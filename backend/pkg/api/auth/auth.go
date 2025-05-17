@@ -1,4 +1,4 @@
-package api
+package auth
 
 import (
 	"encoding/json"
@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"social-network/backend/pkg/db/sqlite"
-	"social-network/backend/pkg/models"
+	 
 	"social-network/backend/pkg/utils"
 )
 
@@ -17,7 +17,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var user models.Logininfo
+	var user Logininfo
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
 		utils.JsonResponse(w, http.StatusBadRequest, "Invalid request body")
@@ -62,7 +62,7 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var newUser models.RegisterInfo
+	var newUser RegisterInfo
 	if err := json.NewDecoder(r.Body).Decode(&newUser); err != nil {
 		utils.JsonResponse(w, http.StatusBadRequest, "Invalid JSON")
 		return
