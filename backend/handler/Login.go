@@ -19,14 +19,14 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "POST" {
 		// Parse form data
-		err := r.ParseMultipartForm(10 << 20) // 10 MB
+		//err := r.ParseMultipartForm(10 << 20) // 10 MB
 		fmt.Println("DEBUG r.Form:", r.Form)
-		if err != nil {
+		/* if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write([]byte(`{"error": "Failed to parse form data", "status":false}`))
 			return
-		}
-
+		} */
+		var err error
 		email := r.FormValue("email")
 		password := r.FormValue("password")
 		fmt.Println("Email:", string(email), "Password:", string(password))
@@ -66,6 +66,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 			Name:     "SessionToken",
 			Value:    SessionToken,
 			Path:     "/",
+			
 			// HttpOnly: true,
 			// Secure:   false, // Set to true in production with HTTPS
 			// SameSite: http.SameSiteLaxMode,

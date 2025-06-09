@@ -32,6 +32,10 @@ func main() {
 	router.Handle("/getcomment", handler.AuthMiddleware(http.HandlerFunc(handler.Comments)))
 	router.Handle("/logout", handler.AuthMiddleware(http.HandlerFunc(handler.Logout)))
 
+	//follow system 
+	router.Handle("/followRequest", handler.AuthMiddleware(http.HandlerFunc(handler.Followreq)))
+	router.Handle("/unfollowRequest", handler.AuthMiddleware(http.HandlerFunc(handler.Unfollowreq)))
+
 	// router.HandleFunc("/online-users", handler.OnlineUsers)
 	router.HandleFunc("/ws", handler.WebSocketHandler) // Add WebSocket route
 	router.Handle("/static/", http.HandlerFunc(handler.Sta))

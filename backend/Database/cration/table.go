@@ -12,7 +12,8 @@ func CreateTable() error {
 		age INTEGER NOT NULL,
 		nikname TEXT NOT NULL UNIQUE,
 		password TEXT NOT NULL,
-		sessionToken TEXT
+		sessionToken TEXT,
+		is_public BOOLEAN NOT NULL DEFAULT TRUE
 	);
 	
 	CREATE TABLE IF NOT EXISTS postes (
@@ -48,7 +49,8 @@ func CreateTable() error {
 			text TEXT,
 			time TEXT
 		);
-		CREATE TABLE IF NOT EXISTS followers (
+
+	CREATE TABLE IF NOT EXISTS followers (
 		follower_id TEXT NOT NULL,
 		following_id TEXT NOT NULL,
 		status TEXT NOT NULL CHECK(status IN ('pending', 'accepted')),

@@ -3,6 +3,7 @@ package db
 import (
 	"database/sql"
 	"fmt"
+	 
 
 	"social-network/utils"
 )
@@ -31,6 +32,7 @@ func Getpasswor(input string, typ string) (string, error) {
 func Updatesession(typ string, tocken string, input string) error {
 	query := "UPDATE users SET sessionToken = $1 WHERE " + typ + " = $2"
 	_, err := DB.Exec(query, tocken, input)
+	fmt.Println("wslaat")
 	if err != nil {
 		return err
 	}
@@ -223,6 +225,7 @@ func GetLastMessage(allUsers []string) ([]UserLastMessage, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	defer rows.Close()
 
 	for rows.Next() {
@@ -258,4 +261,30 @@ func contains(list []string, user string) bool {
 		}
 	}
 	return false
+}
+
+
+func CheckPublic(id int) (bool,error) {
+	var result bool
+	query := "SELECT is_public FROM users WHERE id = ?"
+
+	row := DB.QueryRow(query , id)  
+
+	err := row.Scan(&result)	
+	if err != nil {
+		if err == sql.ErrNoRows {
+			 return false , nil
+		} 
+		return false , err
+	}
+	return result , nil
+}
+
+func BeforInsertion(follower_id int,following_id int) bool{
+	var exist bool
+	 query := "SELECT EXISTS(SELECT 1 FROM followers WHERE follower_id = ? AND following_id = ?)"
+
+	 DB.QueryRow(query,follower_id,following_id).Scan(&exist)
+
+	 return exist
 }

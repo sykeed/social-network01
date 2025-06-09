@@ -2,6 +2,7 @@ package db
 
 import (
 	"fmt"
+	"log"
 	"strconv"
 	"time"
 )
@@ -123,4 +124,35 @@ func InsertMessages(sender string, receiver string, content string, time string)
 		return err
 	}
 	return nil
+}
+
+func InsertFOllow(follower_id int, following_id int, status string) error {
+	query := "INSERT INTO followers (follower_id , following_id , status) VALUES (?,?,?)"
+
+	info, err := DB.Prepare(query)
+	if err != nil {
+		fmt.Println("publicddd")
+		return err
+	}
+
+	_, err = info.Exec(follower_id, following_id, status)
+	if err != nil {
+		return err
+	}
+
+	return err
+}
+
+func DeleteFollow(followerId, followingId int) {
+	stmt, err := DB.Prepare("DELETE FROM followers WHERE follower_id = ? AND following_id = ?")
+	if err != nil {
+		log.Println("Error preparing delete statement:", err)
+		return
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(followerId, followingId)
+	if err != nil {
+		log.Println("Error deleting follow:", err)
+	}
 }

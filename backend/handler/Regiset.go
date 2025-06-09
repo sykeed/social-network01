@@ -24,6 +24,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		message := ""
 		var info User
 		errore := json.NewDecoder(r.Body).Decode(&info)
+		fmt.Println("wslt",info , errore)
 		if errore != nil {
 			fmt.Println(errore)
 			w.WriteHeader(http.StatusBadRequest)
@@ -35,7 +36,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		if validatEmail {
 			message = "Email already exists"
 		}
-
+		
 		validatNikname := db.CheckInfo(info.Nickname, "nikname")
 		if validatNikname {
 			if message != "" {

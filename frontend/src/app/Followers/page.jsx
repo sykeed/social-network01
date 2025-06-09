@@ -1,8 +1,50 @@
-export default function Followers() {
-    return (
-      <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-        <h1 className="text-2xl font-bold">Followers Page</h1>
-        <p className="text-lg">This is the Followers page content.</p>
-      </div>
-    );
-  }
+'use client';
+import { useState } from 'react';
+import { FaUserPlus } from "react-icons/fa6";
+import { FaUserXmark } from "react-icons/fa6";
+
+export default function FollowButton({ targetUserid }) {
+  const [following, setFollowing] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleClick = async () => {
+    setLoading(true);
+    try {
+      const url = following ? "/api/unfollowRequest" : "/api/followRequest";
+
+      const response = await fetch(url, {
+        credentials: 'include',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          following_id: "1"
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Request failed');
+      } else {
+        setFollowing(!following);
+      }
+    } catch (err) {
+      console.error('Error:', err);
+    }
+    setLoading(false);
+  };
+
+  return (
+    <button onClick={handleClick} disabled={loading}>
+      {following ? (
+        <>
+          <FaUserXmark /> Unfollow
+        </>
+      ) : (
+        <>
+          <FaUserPlus /> Follow
+        </>
+      )}
+    </button>
+  );
+}
