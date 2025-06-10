@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
-	db "social-network/Database/cration"
+	db "social-network/db/cration"
 	"social-network/servisse"
 	"social-network/utils"
 )

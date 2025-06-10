@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	db "social-network/Database/cration"
+	db "social-network/db/cration"
 )
 
 func Logout(w http.ResponseWriter, r *http.Request) {

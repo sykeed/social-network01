@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	db "social-network/Database/cration"
+	db "social-network/db/cration"
 )
 
 // AuthMiddleware checks if the user is authenticated

@@ -1,0 +1,12 @@
+CREATE TABLE IF NOT EXISTS users (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		first_name TEXT NOT NULL,
+		last_name TEXT NOT NULL,
+		email TEXT NOT NULL UNIQUE,
+		gender TEXT NOT NULL,
+		age INTEGER NOT NULL,
+		nikname TEXT NOT NULL UNIQUE,
+		`password` TEXT NOT NULL,
+		sessionToken TEXT,
+		is_public BOOLEAN NOT NULL DEFAULT TRUE
+	);

@@ -4,7 +4,7 @@ import (
 	"errors"
 	"net/http"
 
-	db "social-network/Database/cration"
+	db "social-network/db/cration"
 )
 
 func IsHaveToken(r *http.Request) (string, error) {

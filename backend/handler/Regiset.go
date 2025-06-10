@@ -2,10 +2,9 @@ package handler
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
-	db "social-network/Database/cration"
+	db "social-network/db/cration"
 	"social-network/utils"
 )
 
@@ -24,9 +23,9 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		message := ""
 		var info User
 		errore := json.NewDecoder(r.Body).Decode(&info)
-		fmt.Println("wslt",info , errore)
+
 		if errore != nil {
-			fmt.Println(errore)
+
 			w.WriteHeader(http.StatusBadRequest)
 			json.NewEncoder(w).Encode(map[string]interface{}{"success": false, "message": "Invalid request body"})
 			return

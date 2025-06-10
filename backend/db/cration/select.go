@@ -3,19 +3,34 @@ package db
 import (
 	"database/sql"
 	"fmt"
-	 
-
 	"social-network/utils"
+	"social-network/db/sqlite"
 )
+var DB = sqlite.GetDB()
+func GetAllUsers() ([]string, error) {
+ 	
+	rows, err := DB.Query("SELECT nikname FROM users ORDER BY nikname ASC;")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var users []string
+	for rows.Next() {
+		var nickname string
+		if err := rows.Scan(&nickname); err != nil {
+			return nil, err
+		}
+		users = append(users, nickname)
+	}
+	return users, nil
+}
 
 func CheckInfo(info string, input string) bool { ////hna kanoxofo wax email ola wax nikname kayn 3la hsab input xno fiha wax email ola wax nikname
 	var inter int
 	quire := "SELECT COUNT(*) FROM users WHERE " + input + " = ?"
-	err := DB.QueryRow(quire, info).Scan(&inter)
-	if err != nil {
-		fmt.Println(err)
-		return false
-	}
+	DB.QueryRow(quire, info).Scan(&inter)
+
 	return inter == 1
 }
 
@@ -183,10 +198,6 @@ func Getlastid() (int, error) {
 	return id, nil
 }
 
-
-
-
-
 func SelecChats(sender string, receiver string, num int) ([]utils.Msg, error) {
 	var msgs []utils.Msg
 
@@ -263,28 +274,27 @@ func contains(list []string, user string) bool {
 	return false
 }
 
-
-func CheckPublic(id int) (bool,error) {
+func CheckPublic(id int) (bool, error) {
 	var result bool
 	query := "SELECT is_public FROM users WHERE id = ?"
 
-	row := DB.QueryRow(query , id)  
+	row := DB.QueryRow(query, id)
 
-	err := row.Scan(&result)	
+	err := row.Scan(&result)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			 return false , nil
-		} 
-		return false , err
+			return false, nil
+		}
+		return false, err
 	}
-	return result , nil
+	return result, nil
 }
 
-func BeforInsertion(follower_id int,following_id int) bool{
+func BeforInsertion(follower_id int, following_id int) bool {
 	var exist bool
-	 query := "SELECT EXISTS(SELECT 1 FROM followers WHERE follower_id = ? AND following_id = ?)"
+	query := "SELECT EXISTS(SELECT 1 FROM followers WHERE follower_id = ? AND following_id = ?)"
 
-	 DB.QueryRow(query,follower_id,following_id).Scan(&exist)
+	DB.QueryRow(query, follower_id, following_id).Scan(&exist)
 
-	 return exist
+	return exist
 }
